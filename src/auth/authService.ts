@@ -1,4 +1,4 @@
-import { authRepository } from "./authorizationRepository";
+import { authRepository } from "./authRepository";
 
 class AuthorizationService {
     async signUpUser(nickName: string, phoneNumber: string, code: number) {

@@ -1,8 +1,9 @@
-import express from 'express';
-import { router as authorizationRouter } from '../src/Authorization/authorizationController'
 import dotenv from 'dotenv'
-
 dotenv.config()
+
+import express from 'express';
+import { router as authorizationRouter } from './auth/authController'
+
 
 async function main() {
     const app = express()

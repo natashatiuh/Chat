@@ -1,5 +1,5 @@
 import { v4 } from "uuid"
-import { pool } from "../connection/mysql.connection"
+import { pool } from "../common/mysql.connection"
 import twilio from 'twilio'
 
 class AuthorizationRepository {
@@ -18,7 +18,7 @@ class AuthorizationRepository {
 
         const query = `
             INSERT INTO users (id, nickName, phoneNumber) 
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?)
         `
         const params = [v4(), nickName, phoneNumber]
 
