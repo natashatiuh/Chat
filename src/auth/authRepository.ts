@@ -1,6 +1,7 @@
 import { v4 } from "uuid"
 import { pool } from "../common/mysql.connection"
 import twilio from 'twilio'
+import jwt from 'jsonwebtoken'
 
 class AuthorizationRepository {
     authorizationCode: Record<string, number> = {}
@@ -11,6 +12,10 @@ class AuthorizationRepository {
 
     async setCodeByPhoneNumber(phoneNumber: string, code: number) {
         this.authorizationCode[phoneNumber] = code
+    }
+
+    async deleteUsedCode(phoneNumber: string) {
+        this.authorizationCode[phoneNumber] = undefined
     }
 
     async createUser(nickName: string, phoneNumber: string) {
@@ -39,6 +44,24 @@ class AuthorizationRepository {
 
     async generateAuthCode() {
         return Math.floor(1000 + Math.random() * 9000)
+    }
+
+    async getUser(nickName: string, phoneNumber: string) {
+        const connection = await pool.getConnection()
+        
+        const query = `
+        SELECT * FROM users WHERE nickname = ? AND phoneNumber = ?
+        `
+        const params = [nickName, phoneNumber]
+
+        const [rows] = await connection.query(query, params)
+        return rows[0]
+    }
+
+    async generateToken(userId: string) {
+        const secretKey: any = process.env.SECRET_KEY
+        const token = await jwt.sign({userId}, secretKey)
+        return token
     }
 }
 
