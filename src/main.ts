@@ -3,6 +3,7 @@ dotenv.config()
 
 import express from 'express';
 import { router as authorizationRouter } from './auth/authController'
+import { router as chatsRouter } from './chats/chatsController'
 
 
 async function main() {
@@ -11,6 +12,7 @@ async function main() {
     app.use(express.json())
 
     app.use('/authorization', authorizationRouter)
+    app.use('/chats', chatsRouter)
     
     const port = 3000;
     

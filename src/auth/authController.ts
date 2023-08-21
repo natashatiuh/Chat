@@ -5,6 +5,7 @@ import { validation } from '../common/validation'
 import { sendCodeSchema } from './schemas/sendCodeSchema'
 import { signUpUserSchema } from './schemas/signUpUserSchema'
 import { signInUserSchema } from './schemas/signInUserSchema'
+import { deleteUserAccountSchema } from './schemas/deleteUserAccountSchema'
 
 export const router = express.Router()
 
@@ -45,6 +46,30 @@ router.get('/', validation(signInUserSchema), async (req, res) => {
             res.send('The user does NOT exist!')
         }
     } catch(error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+router.delete('/', auth(), validation(deleteUserAccountSchema), async (req, res) => {
+    try {
+        const deletedUser = await authorizationService.deleteUserAccount(req.userId)
+        if (deletedUser === true) {
+            res.send('The user was DELETED!')
+        } else {
+            res.send('The user does NOT exist!')
+        }
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+router.get('/all-users', async (req, res) => {
+    try {
+        const users = await authorizationService.getUsers()
+        res.send(users)
+    } catch (error) {
         console.log(error)
         res.send(error)
     }

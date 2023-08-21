@@ -63,6 +63,31 @@ class AuthorizationRepository {
         const token = await jwt.sign({userId}, secretKey)
         return token
     }
+
+    async deleteUser(userId: string) {
+        const connection = await pool.getConnection()
+
+        const query = `
+        DELETE FROM users
+        WHERE id = ?
+        `
+        const params = [ userId ]
+
+        const [rows]: any = await connection.query(query, params)
+        console.log(rows)
+        if (rows.affectedRows > 0) return true
+    }
+
+    async getAllUsers() {
+        const connection = await pool.getConnection()
+
+        const query = `
+        SELECT * FROM users
+        `
+        const [rows] = await connection.query(query)
+        console.log(rows)
+        return rows;
+    }
 }
 
 export const authRepository = new AuthorizationRepository()

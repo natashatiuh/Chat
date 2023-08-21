@@ -36,6 +36,16 @@ class AuthorizationService {
             return
         }
     }
+
+    async deleteUserAccount(userId: string) {
+        const deletedUser = await authRepository.deleteUser(userId)
+        return deletedUser
+    }
+
+    async getUsers() {
+        const users = await authRepository.getAllUsers()
+        return users;
+    }
 }
 
 export const authorizationService = new AuthorizationService
