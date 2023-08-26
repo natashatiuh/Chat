@@ -71,6 +71,22 @@ class MessagesRepository {
         return false
     }
 
+    async deleteSenderMessage(messageId: string, senderId: string) {
+        const connection = await pool.getConnection()
+
+        const query = `
+        DELETE FROM messages 
+        WHERE id = ? AND senderId = ?
+        `
+        const params = [messageId, senderId]
+
+        const [deletedMessage]: any = await connection.query(query, params)
+        console.log(deletedMessage)
+        if(deletedMessage.affectedRows > 0) return true
+
+        return false
+    }
+
 }
 
 export const messagesRepository = new MessagesRepository
