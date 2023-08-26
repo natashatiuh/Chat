@@ -4,6 +4,7 @@ dotenv.config()
 import express from 'express';
 import { router as authorizationRouter } from './auth/authController'
 import { router as chatsRouter } from './chats/chatsController'
+import { router as messagesRouter } from './messages/messagesController'
 
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
 
     app.use('/authorization', authorizationRouter)
     app.use('/chats', chatsRouter)
+    app.use('/messages', messagesRouter)
     
     const port = 3000;
     

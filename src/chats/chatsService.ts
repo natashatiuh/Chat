@@ -6,6 +6,8 @@ class ChatsService {
         if (!isChatExist) {
             await chatRepository.addChat(creatorId, recipientId)
             return true
+        } else {
+            return false
         }
     }
 

@@ -38,6 +38,8 @@ class ChatRepository {
 
         const [rows]: any = await connection.query(query, params)
         if(rows.affectedRows > 0) return true
+
+        return false
     }
 
     async getUserChats(userId: string) {

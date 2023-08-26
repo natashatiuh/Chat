@@ -15,7 +15,7 @@ class AuthorizationRepository {
     }
 
     async deleteUsedCode(phoneNumber: string) {
-        this.authorizationCode[phoneNumber] = undefined
+        delete this.authorizationCode[phoneNumber]
     }
 
     async createUser(nickName: string, phoneNumber: string) {
@@ -76,6 +76,8 @@ class AuthorizationRepository {
         const [rows]: any = await connection.query(query, params)
         console.log(rows)
         if (rows.affectedRows > 0) return true
+
+        return false
     }
 
     async getAllUsers() {
