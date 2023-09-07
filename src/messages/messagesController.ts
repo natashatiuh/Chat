@@ -4,6 +4,7 @@ import { validation } from "../common/validation";
 import { sendMessageSchema } from "./schemas/sendMessageSchema";
 import express from 'express';
 import { deleteMessageSchema } from "./schemas/deleteMessageSchema";
+import { editedMessageSchema } from "./schemas/editMessageSchema";
 
 export const router = express.Router()
 
@@ -25,8 +26,8 @@ router.post('/', auth(), validation(sendMessageSchema), async (req, res) => {
 
 router.delete('/', auth(), validation(deleteMessageSchema), async (req, res) => {
     try {
-        const { messageId } = req.body as any
-        const wasMessageDeleted = await messagesService.deleteMessage(messageId, req.userId)
+        const { messageId, chatId } = req.body as any
+        const wasMessageDeleted = await messagesService.deleteMessage(messageId, req.userId, chatId)
         console.log(wasMessageDeleted)
         if (wasMessageDeleted) {
             res.send('The message was SUCCSESSFULLY DELETED!')
@@ -35,6 +36,21 @@ router.delete('/', auth(), validation(deleteMessageSchema), async (req, res) => 
         }
     } catch (error) {
         console.log(error) 
+        res.send(error)
+    }
+})
+
+router.patch('/', auth(), validation(editedMessageSchema), async (req, res) => {
+    try {
+        const { messageId, message } = req.body as any
+        const isMessageEdited =  await messagesService.editMessage(messageId, req.userId, message)
+        if (isMessageEdited) {
+            res.send('The messages was SUCCSESSFULLY EDITED!')
+        } else {
+            res.send('The message does NOT exist!')
+        }
+    } catch (error) {
+        console.log(error)
         res.send(error)
     }
 })
