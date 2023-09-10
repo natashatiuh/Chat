@@ -8,9 +8,19 @@ class MessagesService {
         return newMessage;
     }
 
-    async deleteMessage(messageId: string, senderId: string) {
-        const deletedMessage = await messagesRepository.deleteSenderMessage(messageId, senderId)
+    async deleteMessage(messageId: string, senderId: string, chatId: string) {
+        const deletedMessage = await messagesRepository.deleteSenderMessage(messageId, senderId, chatId)
         return deletedMessage
+    }
+
+    async editMessage(messageId: string, senderId: string, message: string) {
+        const editedMessage = await messagesRepository.editSenderMessage(messageId, senderId, message)
+        return editedMessage
+    }
+
+    async getChatMessages(chatId: string, userId: string) {
+        const chatMessages = await messagesRepository.getMessages(chatId, userId)
+        return chatMessages
     }
 }
 
