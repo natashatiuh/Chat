@@ -5,6 +5,7 @@ import { sendMessageSchema } from "./schemas/sendMessageSchema";
 import express from 'express';
 import { deleteMessageSchema } from "./schemas/deleteMessageSchema";
 import { editedMessageSchema } from "./schemas/editMessageSchema";
+import { getChatMessagesSchema } from "./schemas/getChatMessages";
 
 export const router = express.Router()
 
@@ -48,6 +49,21 @@ router.patch('/', auth(), validation(editedMessageSchema), async (req, res) => {
             res.send('The messages was SUCCSESSFULLY EDITED!')
         } else {
             res.send('The message does NOT exist!')
+        }
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+router.get('/', auth(), validation(getChatMessagesSchema), async (req, res) => {
+    try {
+        const { chatId } = req.body as any
+        const messages = await messagesService.getChatMessages(chatId, req.userId)
+        if (messages) {
+            res.send(messages)
+        } else {
+            res.send('No messages!')
         }
     } catch (error) {
         console.log(error)

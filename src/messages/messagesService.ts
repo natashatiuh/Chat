@@ -17,6 +17,11 @@ class MessagesService {
         const editedMessage = await messagesRepository.editSenderMessage(messageId, senderId, message)
         return editedMessage
     }
+
+    async getChatMessages(chatId: string, userId: string) {
+        const chatMessages = await messagesRepository.getMessages(chatId, userId)
+        return chatMessages
+    }
 }
 
 export const messagesService = new MessagesService
